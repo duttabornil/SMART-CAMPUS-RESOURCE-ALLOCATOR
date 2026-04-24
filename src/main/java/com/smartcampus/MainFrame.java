@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         dbManager = new DatabaseManager();
-        
+
         setTitle("Smart Campus Resource Allocation System");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
 
     private JPanel createViewBookingsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        
+
         DefaultTableModel model = new DefaultTableModel();
         JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -50,16 +50,15 @@ public class MainFrame extends JFrame {
     }
 
     private void loadBookings(DefaultTableModel model) {
-        String sql = "SELECT b.Booking_ID, b.Booking_Date, b.Start_Time, b.End_Time, b.Status, u.Name as User_Name, r.Resource_Name " +
-                     "FROM Booking b " +
-                     "JOIN User u ON b.User_ID = u.User_ID " +
-                     "JOIN Resource r ON b.Resource_ID = r.Resource_ID";
+        String sql = "SELECT b.Booking_ID, b.Booking_Date, b.Start_Time, b.End_Time, b.Status, u.Name as User_Name, r.Resource_Name "
+                +
+                "FROM Booking b " +
+                "JOIN User u ON b.User_ID = u.User_ID " +
+                "JOIN Resource r ON b.Resource_ID = r.Resource_ID";
 
-        try (Connection conn = dbManager.getConnection(); 
-             Statement stmt = conn.createStatement(); 
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            ResultSetMetaData metaData = rs.getMetaData();
+        try (Connection conn = dbManager.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
 
             Vector<String> columnNames = new Vector<>();
             columnNames.add("Booking ID");
@@ -86,7 +85,8 @@ public class MainFrame extends JFrame {
             model.setDataVector(data, columnNames);
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error loading bookings: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error loading bookings: " + e.getMessage(), "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -108,19 +108,21 @@ public class MainFrame extends JFrame {
         addFormField(panel, "Date (YYYY-MM-DD):", dateField, gbc, row++);
         addFormField(panel, "Start Time (HH:MM:SS):", startField, gbc, row++);
         addFormField(panel, "End Time (HH:MM:SS):", endField, gbc, row++);
-        
-        gbc.gridx = 1; gbc.gridy = row++;
+
+        gbc.gridx = 1;
+        gbc.gridy = row++;
         panel.add(findBtn, gbc);
-        
+
         addFormField(panel, "Available Resource:", resourceCombo, gbc, row++);
         addFormField(panel, "Purpose:", purposeField, gbc, row++);
         addFormField(panel, "User ID:", userIdField, gbc, row++);
 
         findBtn.addActionListener(e -> {
             resourceCombo.removeAllItems();
-            String sql = "SELECT Resource_ID, Resource_Name FROM Resource WHERE Status = 'Available' AND Resource_ID NOT IN " +
-                         "(SELECT Resource_ID FROM Booking WHERE Booking_Date = ? AND Status != 'Rejected' AND " +
-                         "(Start_Time < ? AND End_Time > ?))";
+            String sql = "SELECT Resource_ID, Resource_Name FROM Resource WHERE Status = 'Available' AND Resource_ID NOT IN "
+                    +
+                    "(SELECT Resource_ID FROM Booking WHERE Booking_Date = ? AND Status != 'Rejected' AND " +
+                    "(Start_Time < ? AND End_Time > ?))";
             try (Connection conn = dbManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setDate(1, Date.valueOf(dateField.getText().trim()));
                 pstmt.setTime(2, Time.valueOf(endField.getText().trim()));
@@ -133,7 +135,8 @@ public class MainFrame extends JFrame {
                     JOptionPane.showMessageDialog(panel, "No resources available for the selected time.");
                 }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(panel, "Error finding resources: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(panel, "Error finding resources: " + ex.getMessage(), "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -152,7 +155,7 @@ public class MainFrame extends JFrame {
                 pstmt.setTime(4, Time.valueOf(endField.getText().trim()));
                 pstmt.setString(5, purposeField.getText().trim());
                 pstmt.setInt(6, Integer.parseInt(userIdField.getText().trim()));
-                
+
                 String selectedRes = (String) resourceCombo.getSelectedItem();
                 if (selectedRes == null) {
                     JOptionPane.showMessageDialog(panel, "Please select an available resource first!");
@@ -160,13 +163,16 @@ public class MainFrame extends JFrame {
                 }
                 int resId = Integer.parseInt(selectedRes.split(" - ")[0]);
                 pstmt.setInt(7, resId);
-                
+
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Booking created successfully! Your Booking ID is: " + randomId);
-                
+
                 // clear fields
-                dateField.setText(""); startField.setText("");
-                endField.setText(""); purposeField.setText(""); userIdField.setText("");
+                dateField.setText("");
+                startField.setText("");
+                endField.setText("");
+                purposeField.setText("");
+                userIdField.setText("");
                 resourceCombo.removeAllItems();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -188,15 +194,16 @@ public class MainFrame extends JFrame {
         JTextField idField = new JTextField(15);
         JTextField nameField = new JTextField(15);
         JTextField emailField = new JTextField(15);
-        JComboBox<String> roleCombo = new JComboBox<>(new String[]{"Student", "Faculty", "Admin"});
+        JComboBox<String> roleCombo = new JComboBox<>(new String[] { "Student", "Faculty", "Admin" });
         JTextField deptIdField = new JTextField(15);
 
         int row = 0;
         addFormField(panel, "User ID:", idField, gbc, row++);
         addFormField(panel, "Name:", nameField, gbc, row++);
         addFormField(panel, "Email:", emailField, gbc, row++);
-        
-        gbc.gridx = 0; gbc.gridy = row;
+
+        gbc.gridx = 0;
+        gbc.gridy = row;
         panel.add(new JLabel("Role:"), gbc);
         gbc.gridx = 1;
         panel.add(roleCombo, gbc);
@@ -217,10 +224,13 @@ public class MainFrame extends JFrame {
                 pstmt.setString(3, emailField.getText().trim());
                 pstmt.setString(4, roleCombo.getSelectedItem().toString());
                 pstmt.setInt(5, Integer.parseInt(deptIdField.getText().trim()));
-                
+
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "User added successfully!");
-                idField.setText(""); nameField.setText(""); emailField.setText(""); deptIdField.setText("");
+                idField.setText("");
+                nameField.setText("");
+                emailField.setText("");
+                deptIdField.setText("");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -266,11 +276,15 @@ public class MainFrame extends JFrame {
                 pstmt.setString(4, locationField.getText().trim());
                 pstmt.setInt(5, Integer.parseInt(capacityField.getText().trim()));
                 pstmt.setInt(6, Integer.parseInt(deptIdField.getText().trim()));
-                
+
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Resource added successfully!");
-                idField.setText(""); nameField.setText(""); typeField.setText(""); 
-                locationField.setText(""); capacityField.setText(""); deptIdField.setText("");
+                idField.setText("");
+                nameField.setText("");
+                typeField.setText("");
+                locationField.setText("");
+                capacityField.setText("");
+                deptIdField.setText("");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -307,10 +321,12 @@ public class MainFrame extends JFrame {
                 pstmt.setInt(1, Integer.parseInt(idField.getText().trim()));
                 pstmt.setString(2, nameField.getText().trim());
                 pstmt.setString(3, blockField.getText().trim());
-                
+
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Department added successfully!");
-                idField.setText(""); nameField.setText(""); blockField.setText("");
+                idField.setText("");
+                nameField.setText("");
+                blockField.setText("");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -328,12 +344,13 @@ public class MainFrame extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField bookingIdField = new JTextField(15);
-        JComboBox<String> statusCombo = new JComboBox<>(new String[]{"Approved", "Rejected"});
+        JComboBox<String> statusCombo = new JComboBox<>(new String[] { "Approved", "Rejected" });
 
         int row = 0;
         addFormField(panel, "Booking ID:", bookingIdField, gbc, row++);
-        
-        gbc.gridx = 0; gbc.gridy = row;
+
+        gbc.gridx = 0;
+        gbc.gridy = row;
         panel.add(new JLabel("New Status:"), gbc);
         gbc.gridx = 1;
         panel.add(statusCombo, gbc);
@@ -349,7 +366,7 @@ public class MainFrame extends JFrame {
             try (Connection conn = dbManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, statusCombo.getSelectedItem().toString());
                 pstmt.setInt(2, Integer.parseInt(bookingIdField.getText().trim()));
-                
+
                 int affected = pstmt.executeUpdate();
                 if (affected > 0) {
                     JOptionPane.showMessageDialog(this, "Booking status updated successfully!");
@@ -399,11 +416,14 @@ public class MainFrame extends JFrame {
                 pstmt.setTime(3, Time.valueOf(startField.getText().trim()));
                 pstmt.setTime(4, Time.valueOf(endField.getText().trim()));
                 pstmt.setInt(5, Integer.parseInt(durationField.getText().trim()));
-                
+
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Usage Log added successfully!");
-                logIdField.setText(""); bookingIdField.setText(""); startField.setText("");
-                endField.setText(""); durationField.setText("");
+                logIdField.setText("");
+                bookingIdField.setText("");
+                startField.setText("");
+                endField.setText("");
+                durationField.setText("");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
