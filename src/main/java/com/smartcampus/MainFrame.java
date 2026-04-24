@@ -27,6 +27,29 @@ public class MainFrame extends JFrame {
         tabbedPane.addTab("Approve Bookings", createApproveBookingsPanel());
         tabbedPane.addTab("Add Usage Log", createUsageLogPanel());
 
+        final int[] previousTab = {0};
+        tabbedPane.addChangeListener(e -> {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            String title = tabbedPane.getTitleAt(selectedIndex);
+            if ("Approve Bookings".equals(title)) {
+                JPasswordField pwd = new JPasswordField(10);
+                int action = JOptionPane.showConfirmDialog(this, pwd, "Enter Admin Password", JOptionPane.OK_CANCEL_OPTION);
+                if (action == JOptionPane.OK_OPTION) {
+                    String password = new String(pwd.getPassword());
+                    if ("root".equals(password)) {
+                        previousTab[0] = selectedIndex;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Incorrect Password!", "Access Denied", JOptionPane.ERROR_MESSAGE);
+                        tabbedPane.setSelectedIndex(previousTab[0]);
+                    }
+                } else {
+                    tabbedPane.setSelectedIndex(previousTab[0]);
+                }
+            } else {
+                previousTab[0] = selectedIndex;
+            }
+        });
+
         add(tabbedPane);
     }
 
