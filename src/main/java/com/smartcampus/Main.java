@@ -14,12 +14,12 @@ public class Main {
                     break;
                 }
             }
-            
+
             // Increase font size globally
             Font myFont = new Font("SansSerif", Font.PLAIN, 18);
             FontUIResource fontRes = new FontUIResource(myFont);
             UIManager.getLookAndFeelDefaults().put("defaultFont", fontRes);
-            java.util.Enumeration keys = UIManager.getDefaults().keys();
+            java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
             while (keys.hasMoreElements()) {
                 Object key = keys.nextElement();
                 Object value = UIManager.get(key);
