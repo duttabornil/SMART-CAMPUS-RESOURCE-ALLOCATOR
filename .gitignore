@@ -1,0 +1,11 @@
+# Ignore IDE and OS files
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore compiled class files
+bin/
+*.class
+
+# Explicitly ignore breakdown as requested
+BREAKDOWN.md

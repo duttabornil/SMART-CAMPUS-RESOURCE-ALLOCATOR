@@ -1,0 +1,1427 @@
+The Smart Campus Resource Allocation System 
+21CSC205P Database Management Systems 
+A MINI PROJECTREPORT 
+Submittedby
+NITYA KAUL[RA2411026010672]
+BORNIL DUTTA [RA2411026010661]
+UndertheGuidanceof
+Dr S. Vimal
+(Assistant Professor,Department of Computational Intelligence)
+In partial fulfillment of the requirements for the degree of
+BACHELOR OF TECHNOLOGY
+in
+COMPUTER SCIENCE ENGINEERING 
+with specialization in ARTIFICIAL INTELLEGENCE AND MACHINE LEARNING
+DEPARTMENT OF COMPUTATIONAL INTELLIGENCE
+SCHOOL OF COMPUTING
+COLLEGE OF ENGINEERING ANDTECHNOLOGY
+SRMINSTITUTEOFSCIENCEANDTECHNOLOGY
+KATTANKULATHUR-603203
+MAY 2026
+SRMINSTITUTE OF SCIENCE ANDTECHNOLOGYKATTANKULATHUR–603 203
+BONAFIDECERTIFICATE
+Certified that Project report titled “THE SMART CAMPUS RESOURCE ALLOCATION SYSTEM”is the Bona-fide work of “NITYA KAUL [RA2411026010672] ANDBORNIL DUTTA [RA2411026010661]” who carried out the21CSC205P Database Management Systems mini project work under my supervision.
+Dr. S VIMAL
+Dr. R ANNIE UTHRA
+HEAD OF THE DEPARMENT
+Assistant Professor
+Department of Computational Intelligence 
+PROFESSOR AND HEAD
+Department
+ABSTRACT
+The Smart Campus Resource Allocation System is a database-oriented application designed to efficiently manage and allocate campus resources such as classrooms, laboratories, seminar halls, and projectors. In many colleges, improper scheduling and lack of a centralized systemlead to resource conflicts, double bookings, and inefficient utilization of available facilities. This project aims to solve these problems by applying fundamental and advanced Database Management System (DBMS) concepts studied in the fourth semester. The system uses a relational database model to store and manage data related to resources, departments, users, bookings, and usage logs. Core DBMS concepts such as entity-relationship modelling, normalization, primary keys, and foreign keys are implemented to ensure data integrity and eliminate redundancy. Conflict-free scheduling is achieved using SQL queries and database triggers that prevent overlapping bookings of the same resource. An administrative approval mechanism is included to demonstrate role-based access control, where authorized users can approve or reject booking requests. The system also incorporates database views and indexing techniques to generate usage reports and improve query performance. These reports help in analysing resource usage patterns and understanding how data can be used for decision-making. Through this project, students gain practical experience in database design, SQL (DDL and DML) commands, constraints, triggers, joins, and transactions. The Smart Campus Resource Allocation System not only improves campus resource management but also serves as an effective learning platform for understanding real-world applications of DBMS concepts.
+TABLE OF CONTENTS
+Chapter No.
+Title
+Page no.
+ABSTRACT
+1
+Problem understanding, Identification of Entity and Relationships, Construction of DB using ER Model for their project
+7
+2
+Design of Relational Schemas, Creation of Database and Tables for their project
+11
+3
+3.1Writing queries based on the concepts of Aggregate functions, constraints, sets
+19
+3.2 Writing complex queries based on subqueries, joins and views
+23
+3.3 Writing complex queries based on the concepts of functions, Triggers, Cursors and Exception Handling
+30
+4
+4.1 Analysing the pitfalls, identifying the dependencies, and applying Normalizations- 1NF, 2NF, 3NF
+35
+4.2 Analysing the pitfalls, identifying the dependencies, and applying Normalizations- 4NF, 5NF
+5
+ Implementation of concurrency control and recovery mechanisms.  
+6
+Front-end And Back-End Implementation code 
+7
+Results and Discussions
+LIST OF FIGURES
+Figure No.
+Name
+Page no.
+1.1
+ER MODEL
+10
+2.1
+                                  RELATIONAL SCHEMA
+11
+3
+4
+5
+LIST OF TABLES
+Figure No.
+Name
+Page no.
+2.1
+DEPARTMENT
+12
+2.2
+                                       BOOKING
+     12
+2.3
+                                       BOOKING SLOT
+12
+2.4
+                                       RESOURCE
+13
+2.5
+                                       USER
+13
+2.6
+                                       USAGE_LOG                              
+13
+CHAPTER 1
+PROBLEM UNDERSTANDING, IDENTIFICATION OF ENTITY AND RELATIONSHIPS, CONSTRUCTION OF DB USING ER MODEL FOR THE "SMART CAMPUS RESOURCE ALLOCATION SYSTEM” PROJECT
+ Introduction
+Educational institutions rely heavily on shared resources such as classrooms, laboratories, seminar halls, and projectors for daily academic activities. Efficient allocation of these resources is essential to ensure smooth functioning of lectures, events, and practical sessions. However, traditional booking methods such as manual registers, spreadsheets, or informal communication often led to errors and conflicts.
+The Smart Campus Resource Allocation System is a database-oriented application designed to automate and streamline resource scheduling. It provides a centralized platform where users can check availability, request bookings, and track usage while administrators oversee approvals and management.
+ Motivation
+The motivation for this project arises from:
+Frequent double bookings of classrooms and labs
+Manual and time-consuming allocation processes
+Lack of transparency in resource availability
+Inefficient utilization of campus facilities
+Difficulty in tracking usage statistics
+This project aims to create a structured and automated system that improves accuracy, efficiency, and accountability in campus resource management while implementing real-world DBMS concepts.
+ Scope
+The system supports:
+User registration and authentication
+Resource listing and categorization
+Online booking requests
+Conflict-free scheduling
+Administrative approval mechanism
+Usage reporting and analytics
+Secure database management
+The system is designed for students, faculty members, and administrators within an institution.
+ Problem Statement
+Most educational institutions lack a centralized system to manage shared resources, resulting in scheduling conflicts, inefficient usage, and manual errors. The objective of this project is to design and implement a database-driven system that manages resources, automates booking processes, and ensures reliable, conflict-free allocation using structured DBMS techniques.
+ Project Requirements
+Functional Requirements
+Users must register and log in securely
+View resource availability
+Request bookings
+Admins approve/reject requests
+Prevent overlapping bookings
+Maintain booking history
+Generate usage reports
+Non-Functional Requirements
+Data Integrity
+Security
+High Performance
+Scalability
+Reliability
+ Identification of Entity and Relationships
+Entities Identified
+1. User: Stores user details (students/faculty/admins)
+2. Department: Stores department information
+3. Resource: Stores classroom/lab/equipment details
+4. Booking: Stores reservation details
+5. Approval: Stores admin approval status
+6. Usage Log: Tracks actual usage history
+Relationships Identified
+Department – Use
+One-to-ManyOne department has many users
+User – Booking
+One-to-ManyOne user can create multiple bookings
+Resource – Booking
+One-to-ManyOne resource can have multiple bookings over time
+Booking – Approval
+One-to-OneEach booking has one approval record
+Booking – Usage Log
+One-to-ManyTracks multiple usage records
+Booking – Booking Slot
+One-to-ManyTracks multiple usage records
+ Construction of DB Using ER Model for the Smart Campus Resource Allocation System
+Chapter 2
+Design of Relational Schemas, Creation of Database and Tables for Smart Campus Resource Allocation System
+2.1 Relational Schema for Smart Campus Resource Allocation System
+The relational schema of the Smart Campus Resource Allocation System is derived from the ER model, where each entity is represented as a table and attributes are stored as columns. Primary keys uniquely identify records, while foreign keys establish relationships and maintain referential integrity. The schema reduces redundancy, ensures data consistency, and supports efficient resource booking and tracking across departments, users, and resources.
+Figure 2.1: Relational Schema for Smart Campus Resource Allocation System. 
+The figure 2.1 depicts the relational schema for the Smart Campus Resource Allocation System. 
+2.2 Description of Tables
+Table 2.1 :Department
+Table 2.2 :Booking
+Table 2.3: booking _Slot
+Table 2.4 :Resource
+Table 2.5:User
+Table 2.6 :Usage_Log
+2.3 Creation of Database and Tables - DDL Commands 
+1. Create Department table
+CREATE TABLE Department (
+Department_ID INT PRIMARY KEY,
+Department_NameVARCHAR(100) NOT NULL,
+    Block VARCHAR(50)
+);
+2. Create User Table
+CREATE TABLE User (
+User_ID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE,
+    Role ENUM('Student','Faculty','Admin') NOT NULL,
+Department_ID INT,
+    FOREIGN KEY (Department_ID)
+        REFERENCES Department(Department_ID)
+);
+3. Create User Table
+CREATE TABLE Resource (
+Resource_ID INT PRIMARY KEY,
+Resource_NameVARCHAR(100) NOT NULL,
+Resource_TypeVARCHAR(50),
+    Location VARCHAR(100),
+    Capacity INT,
+    Status ENUM('Available','Maintenance') DEFAULT 'Available',
+Department_ID INT,
+    FOREIGN KEY (Department_ID)
+        REFERENCES Department(Department_ID)
+);
+4. Create Booking Table
+CREATE TABLE Booking (
+Booking_ID INT PRIMARY KEY,
+Booking_Date DATE,
+Start_Time TIME,
+End_Time TIME,
+    Purpose VARCHAR(255),
+    Status ENUM('Pending','Approved','Rejected') DEFAULT 'Pending',
+User_ID INT,
+Resource_ID INT,
+    FOREIGN KEY (User_ID)
+        REFERENCES User(User_ID),
+    FOREIGN KEY (Resource_ID)
+        REFERENCES Resource(Resource_ID)
+);
+Create Booing_Slot table
+CREATE TABLE Booking_Slot (
+Booking_ID INT,
+Slot_No INT,
+Slot_Start_Time TIME,
+Slot_End_Time TIME,
+    PRIMARY KEY (Booking_ID, Slot_No),
+    FOREIGN KEY (Booking_ID)
+        REFERENCES Booking(Booking_ID)
+        ON DELETE CASCADE
+);
+Create Usage_Log table
+CREATE TABLE Usage_Log (
+Log_ID INT PRIMARY KEY,
+Booking_ID INT UNIQUE,
+Actual_Start_Time TIME,
+Actual_End_Time TIME,
+Usage_Duration INT,
+    FOREIGN KEY (Booking_ID)
+        REFERENCES Booking(Booking_ID)
+);
+2.4 Insertion of tuples into the table – DML commands
+Insert SQL for Department 
+INSERT INTO Department VALUES
+(1, 'Computer Science', 'Block A'),
+(2, 'Electronics', 'Block B'),
+(3, 'Mechanical', 'Block C');
+Insert SQL for USER
+INSERT INTO User (User_ID, Name, Email, Role, Department_ID)
+VALUES
+(101, 'Riya Sharma', 'riya@gmail.com', 'Student', 1),
+(102, 'Aman Verma', 'aman@gmail.com', 'Student', 1),
+(103, 'Dr. Sen', 'sen@gmail.com', 'Faculty', 2),
+(104, 'Admin Raj', 'admin@gmail.com', 'Admin', 1);
+Insert SQL for RESOURCE
+INSERT INTO Resource (Resource_ID, Resource_Name, Resource_Type, Location, Capacity, Status, Department_ID)
+VALUES
+(201, 'Lab 1', 'Computer Lab', '1st Floor', 40, 'Available', 1),
+(202, 'Seminar Hall', 'Hall', 'Ground Floor', 150, 'Available', 1),
+(203, 'Projector A', 'Equipment', 'Store Room', 1, 'Available', 2);
+Insert SQL for BOOKING
+INSERT INTO Booking (Booking_ID, Booking_Date, Start_Time, End_Time, Purpose, Status, User_ID, Resource_ID)
+VALUES
+(301, '2026-02-12', '10:00:00', '12:00:00', 'Project Discussion', 'Approved', 101, 201),
+(302, '2026-02-13', '14:00:00', '16:00:00', 'Workshop', 'Pending', 102, 202);
+Insert SQL for BOOKING_SLOT
+INSERT INTO Booking_Slot (Booking_ID, Slot_No, Slot_Start_Time, Slot_End_Time)
+VALUES
+(301, 1, '10:00:00', '11:00:00'),
+(301, 2, '11:00:00', '12:00:00'),
+(302, 1, '14:00:00', '15:00:00'),
+(302, 2, '15:00:00', '16:00:00');
+Insert SQL for USAGE_LOG
+INSERT INTO Usage_Log (Log_ID, Booking_ID, Actual_Start_Time, Actual_End_Time, Usage_Duration)
+VALUES
+(401, 301, '10:05:00', '11:55:00', 110),
+(402,302,’14:05:00’,’15:55:00’,110);
+CHAPTER 3
+Complex Queries Based on the Concepts of Constraints, Sets, Joins, Views, Triggers and Cursors
+3.1 Adding Constraints and Queries Based on Constraints
+Constraints are used in database systems to maintain data integrity and ensure that invalid or inconsistent data cannot be inserted into the tables. In the Smart Campus Resource Allocation System, constraints are applied to ensure unique records, maintain relationships between tables, and enforce valid data ranges.
+Question 1
+Ensure that the email address of each user is unique.
+SQL Statement
+ALTER TABLE UserADD CONSTRAINT unique_user_email UNIQUE(Email);
+OutputDuplicate email addresses are not allowed in the User table.
+Question 2
+Ensure that the capacity of a resource must always be greater than zero.
+SQL Statement
+ALTER TABLE ResourceADD CONSTRAINT check_capacityCHECK (Capacity > 0);
+OutputResources cannot be inserted with zero or negative capacity.
+Question 3
+Ensure that the booking status is valid.
+SQL Statement
+ALTER TABLE BookingADD CONSTRAINT check_statusCHECK (Status IN ('Pending','Approved','Rejected'));
+OutputOnly valid booking statuses are allowed.
+3.2 Queries Based on Aggregate Functions
+Aggregate functions are used to perform calculations on multiple records and return a single summarized value.
+Question 1
+Find the total number of bookings for each resource.
+SQL Statement
+SELECT Resource_ID, COUNT(*) AS Total_BookingsFROM BookingGROUP BY Resource_ID;
+OutputDisplays the number of bookings for each resource.
+Question 2
+Find the average capacity of resources in each department.
+SQL Statement
+SELECT Department_ID, AVG(Capacity) AS Average_CapacityFROM ResourceGROUP BY Department_ID;
+OutputDisplays the average resource capacity per department.
+Question 3
+Find the total number of users in each department.
+SQL Statement
+SELECT Department_ID, COUNT(User_ID) AS Total_UsersFROM UserGROUP BY Department_ID;
+OutputDisplays the total number of users belonging to each department.
+3.3 Complex Queries Based on Sets
+Set operations are used to combine results from multiple queries.
+Question 1
+Find users who have made bookings and are also listed in the usage log.
+SQL Statement
+SELECT User_IDFROM BookingWHERE Booking_ID IN (SELECT Booking_ID FROM Usage_Log);
+OutputDisplays users who have confirmed usage records.
+Question 2
+Find users who created bookings but did not actually use the resource.
+SQL Statement
+SELECT User_IDFROM BookingWHERE Booking_ID NOT IN (SELECT Booking_ID FROM Usage_Log);
+OutputDisplays users whose bookings were not used.
+Question 3
+Find all users who either made a booking or appear in usage logs.
+SQL Statement
+SELECT User_ID FROM BookingUNIONSELECT Booking_ID FROM Usage_Log;
+OutputDisplays combined results of bookings and usage logs.
+3.4 Complex Queries Based on Subqueries
+Subqueries are queries nested inside another SQL query.
+Question 1
+Find users who booked the resource Lab 1.
+SQL Statement
+SELECT NameFROM UserWHERE User_ID IN(SELECT User_IDFROM BookingWHERE Resource_ID =(SELECT Resource_IDFROM ResourceWHERE Resource_Name = 'Lab 1')
+);
+Question 2
+Find the resource with the highest number of bookings.
+SQL Statement
+SELECT Resource_IDFROM BookingGROUP BY Resource_IDHAVING COUNT(*) =(SELECT MAX(cnt)FROM(SELECT COUNT(*) cntFROM BookingGROUP BY Resource_ID) AS temp);
+Question 3
+Find users who made bookings longer than the average booking duration.
+SQL Statement
+SELECT NameFROM UserWHERE User_ID IN(SELECT User_IDFROM BookingWHERE TIMESTAMPDIFF(MINUTE, Start_Time, End_Time) >(SELECT AVG(TIMESTAMPDIFF(MINUTE, Start_Time, End_Time))FROM Booking));
+3.5 Complex Queries Based on Joins
+Joins combine rows from multiple tables based on related columns.
+Question 1
+Display user names along with their booking details.
+SQL Statement (INNER JOIN)
+SELECT U.Name, B.Booking_Date, B.PurposeFROM User UJOIN Booking BON U.User_ID = B.User_ID;
+Question 2
+Display resource names along with department names.
+SQL Statement
+SELECT R.Resource_Name, D.NameFROM Resource RJOIN Department DON R.Department_ID = D.Department_ID;
+Question 3
+Display booking details including user and resource information.
+SQL Statement
+SELECT U.Name, R.Resource_Name, B.Booking_Date, B.StatusFROM Booking BJOIN User U ON B.User_ID = U.User_IDJOIN Resource R ON B.Resource_ID = R.Resource_ID;
+Question 4
+Display all users even if they have not made bookings.
+SQL Statement (LEFT JOIN)
+SELECT U.Name, B.Booking_IDFROM User ULEFT JOIN Booking BON U.User_ID = B.User_ID;
+3.6 Complex Queries Based on Views
+Views are virtual tables created from queries.
+Question 1
+Create a view to display booking details.
+SQL Statement
+CREATE VIEW Booking_Details ASSELECT U.Name, R.Resource_Name, B.Booking_Date, B.StatusFROM Booking BJOIN User U ON B.User_ID = U.User_IDJOIN Resource R ON B.Resource_ID = R.Resource_ID;
+Question 2
+Display data from the view.
+SQL Statement
+SELECT * FROM Booking_Details;
+Question 3
+Create a view showing total bookings per resource.
+SQL Statement
+CREATE VIEW Resource_Booking_Count ASSELECT Resource_ID, COUNT(*) AS Total_BookingsFROM BookingGROUP BY Resource_ID;
+3.7 Complex Queries Based on Triggers
+Triggers automatically execute when certain database events occur.
+Question 1
+Prevent double booking of the same resource.
+SQL Statement
+DELIMITER //CREATE TRIGGER prevent_double_bookingBEFORE INSERT ON BookingFOR EACH ROWBEGINIF EXISTS(SELECT 1FROM BookingWHERE Resource_ID = NEW.Resource_IDAND Booking_Date = NEW.Booking_DateAND NOT (End_Time<= NEW.Start_Time OR Start_Time>= NEW.End_Time))THENSIGNAL SQLSTATE '45000'SET MESSAGE_TEXT = 'Resource already booked for this time slot';END IF;END //DELIMITER ;
+Question 2
+Automatically set booking status to Pending.
+SQL Statement
+CREATE TRIGGER set_booking_statusBEFORE INSERT ON BookingFOR EACH ROWSET NEW.Status = 'Pending';
+3.8 Complex Queries Based on Cursors
+Cursors allow row-by-row processing of query results.
+Question 1
+Display all user names using a cursor.
+SQL Statement
+DELIMITER //CREATE PROCEDURE display_users()BEGINDECLARE done INT DEFAULT FALSE;DECLARE uname VARCHAR(100);DECLARE cur CURSOR FOR SELECT Name FROM User;DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;OPEN cur;read_loop: LOOPFETCH cur INTO uname;IF done THENLEAVE read_loop;END IF;SELECT uname AS User_Name;END LOOP;CLOSE cur;END //DELIMITER ;
+Question 2
+Display all resource names using a cursor.
+SQL Statement
+DELIMITER //CREATE PROCEDURE display_resources()BEGINDECLARE done INT DEFAULT FALSE;DECLARE rname VARCHAR(100);DECLARE cur CURSOR FOR SELECT Resource_Name FROM Resource;DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;OPEN cur;read_loop: LOOPFETCH cur INTO rname;IF done THENLEAVE read_loop;END IF;SELECT rname AS Resource_Name;END LOOP;CLOSE cur;END //DELIMITER ;
+CHAPTER 4
+ANALYSING THE PITFALLS, IDENTIFYING THE DEPENDENCIES, AND APPLYING NORMALIZATION
+4.1 Analyse the Pitfalls in Relations
+Before normalization, assume a combined unnormalized table:
+User_ID
+Name
+Email
+Dept
+Resource
+Booking_Date
+Time
+Status
+Capacity
+Approval
+101
+Riya
+riya@gmail.com
+CSE
+Lab1, Hall
+12-02-2026
+10-12, 2-4
+Approved
+40
+Yes
+102
+Aman
+aman@gmail.com
+CSE
+Lab1
+13-02-2026
+9-11
+Pending
+40
+No
+103
+Dr.Sen
+sen@gmail.com
+ECE
+Projector
+13-02-2026
+1-2
+Approved
+1
+Yes
+104
+Raj
+admin@gmail.com
+CSE
+Hall
+14-02-2026
+3-5
+Approved
+150
+Yes
+105
+Neha
+neha@gmail.com
+MECH
+Lab2, Projector
+15-02-2026
+10-1
+Pending
+50
+No
+106
+Arjun
+arjun@gmail.com
+CSE
+Lab1
+16-02-2026
+11-1
+Approved
+40
+Yes
+107
+Priya
+priya@gmail.com
+ECE
+Hall
+17-02-2026
+2-4
+Pending
+150
+No
+108
+Karan
+karan@gmail.com
+MECH
+Lab2
+18-02-2026
+9-11
+Approved
+50
+Yes
+Pitfalls:
+1. Data Redundancy
+Same user details repeated across multiple rows 
+Resource and department data duplicated 
+2. Update Anomaly
+Updating email requires multiple row updates 
+3. Insertion Anomaly
+Cannot insert a new resource without booking 
+4. Deletion Anomaly
+Deleting a booking removes user/resource info
+4.2 First Normal Form (1NF)
+Before 1NF (Unnormalized Table)
+4.2.1: Identify Dependency
+User_ID → Name, Email, Department_ID
+Resource_ID → Resource_Name, Resource_Type, Capacity
+Booking_ID → Booking_Date, Time_Slots, Status, User_ID, Resource_ID
+Problem:
+Attributes like Resource_ID, Resource_Name, Time_Slots contain multiple values
+Time_Slots are stored as 10-12, 14-16 (non-atomic values)
+Violates atomicity
+4.2.2: Apply Normalization to 1NF
+After 1NF (Normalized Table)
+CREATE TABLE Booking_1NF (
+    User_ID INT,
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+    Department VARCHAR(50),
+    Resource_ID INT,
+    Resource_Name VARCHAR(100),
+    Booking_Date DATE,
+    Time_Slot VARCHAR(20),
+    Status VARCHAR(20)
+);
+INSERT INTO Booking_1NF VALUES
+-- Riya (split into multiple rows)
+(101, 'Riya', 'riya@gmail.com', 'CSE', 201, 'Lab1', '2026-02-12', '10-12', 'Approved'),
+(101, 'Riya', 'riya@gmail.com', 'CSE', 202, 'Hall', '2026-02-12', '14-16', 'Approved'),
+-- Aman
+(102, 'Aman', 'aman@gmail.com', 'CSE', 201, 'Lab1', '2026-02-13', '09-11', 'Pending'),
+-- Dr Sen
+(103, 'Dr Sen', 'sen@gmail.com', 'ECE', 203, 'Projector', '2026-02-13', '13-14', 'Approved'),
+-- Raj
+(104, 'Raj', 'admin@gmail.com', 'CSE', 202, 'Hall', '2026-02-14', '15-17', 'Approved'),
+-- Neha (split)
+(105, 'Neha', 'neha@gmail.com', 'MECH', 204, 'Lab2', '2026-02-15', '10-12', 'Pending'),
+(105, 'Neha', 'neha@gmail.com', 'MECH', 203, 'Projector', '2026-02-15', '12-13', 'Pending'),
+-- Arjun
+(106, 'Arjun', 'arjun@gmail.com', 'CSE', 201, 'Lab1', '2026-02-16', '11-13', 'Approved'),
+-- Priya
+(107, 'Priya', 'priya@gmail.com', 'ECE', 202, 'Hall', '2026-02-17', '14-16', 'Pending'),
+-- Karan
+(108, 'Karan', 'karan@gmail.com', 'MECH', 204, 'Lab2', '2026-02-18', '09-11', 'Approved');
+4.3 Second Normal Form (2NF)
+4.3.1: Identify Dependencies
+User_ID → Name, Email 
+Resource_ID → Resource_Name, Capacity 
+4.3.2: Apply Normalization to 2NF
+USER TABLE 
+CREATE TABLE User_2NF (
+    User_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+    Department VARCHAR(50)
+);
+INSERT INTO User_2NF VALUES
+(101, 'Riya', 'riya@gmail.com', 'CSE'),
+(102, 'Aman', 'aman@gmail.com', 'CSE'),
+(103, 'Dr Sen', 'sen@gmail.com', 'ECE'),
+(104, 'Raj', 'admin@gmail.com', 'CSE'),
+(105, 'Neha', 'neha@gmail.com', 'MECH'),
+(106, 'Arjun', 'arjun@gmail.com', 'CSE'),
+(107, 'Priya', 'priya@gmail.com', 'ECE'),
+(108, 'Karan', 'karan@gmail.com', 'MECH');
+RESOURCE TABLE
+CREATE TABLE Resource_2NF (
+    Resource_ID INT PRIMARY KEY,
+    Resource_Name VARCHAR(100)
+);
+INSERT INTO Resource_2NF VALUES
+(201, 'Lab1'),
+(202, 'Hall'),
+(203, 'Projector'),
+(204, 'Lab2');
+BOOKING TABLE
+CREATE TABLE Booking_2NF (
+    User_ID INT,
+    Resource_ID INT,
+    Booking_Date DATE,
+    Time_Slot VARCHAR(20),
+    Status VARCHAR(20),
+    PRIMARY KEY (User_ID, Resource_ID, Booking_Date, Time_Slot)
+);
+INSERT INTO Booking_2NF VALUES
+(101, 201, '2026-02-12', '10-12', 'Approved'),
+(101, 202, '2026-02-12', '14-16', 'Approved'),
+(102, 201, '2026-02-13', '09-11', 'Pending'),
+(103, 203, '2026-02-13', '13-14', 'Approved'),
+(104, 202, '2026-02-14', '15-17', 'Approved'),
+(105, 204, '2026-02-15', '10-12', 'Pending'),
+(105, 203, '2026-02-15', '12-13', 'Pending'),
+(106, 201, '2026-02-16', '11-13', 'Approved'),
+(107, 202, '2026-02-17', '14-16', 'Pending'),
+(108, 204, '2026-02-18', '09-11', 'Approved');
+4.4 Third Normal Form (3NF)
+4.4.1: Identify Dependency
+USERS
+Direct Dependency:User_ID → Name, Email, Department_ID
+Since User_ID uniquely identifies each user, all user-related attributes depend directly on it. There is no dependency of non-key attributes on other non-key attributes within this table after separation.
+DEPARTMENT
+Direct Dependency:Department_ID → Department_Name
+Each department is uniquely identified by Department_ID, and the department name depends directly on it. No transitive dependency exists within this table.
+RESOURCE
+Direct Dependency:Resource_ID → Resource_Name, Resource_Type, Location, Capacity, Department_ID
+All attributes of the resource depend directly on the primary key Resource_ID. There are no non-key attributes determining other attributes.
+BOOKING
+Direct Dependency:Booking_ID → Booking_Date, Start_Time, End_Time, Status, User_ID, Resource_ID
+Each booking is uniquely identified by Booking_ID, and all related attributes depend directly on it. There is no transitive dependency present.
+BOOKING_SLOT
+Direct Dependency:(Booking_ID, Slot_No) → Slot_Start_Time, Slot_End_Time
+The combination of Booking_ID and Slot_No uniquely identifies each slot. Slot timings depend directly on this composite key.
+USAGE_LOG
+Direct Dependency:Log_ID → Booking_ID, Actual_Start_Time, Actual_End_Time, Usage_Duration
+Each log entry is uniquely identified by Log_ID, and all attributes depend directly on it without any transitive dependency.
+Transitive Dependency Identified
+User_ID → Department_ID → Department_Name
+Here, Department_Name depends on Department_ID, which in turn depends on User_ID. This creates a transitive dependency, which violates Third Normal Form (3NF).
+4.4.2: Apply Normalization to 3NF
+CREATE TABLE Department_3NF (
+    Department_ID INT PRIMARY KEY,
+    Department_Name VARCHAR(50)
+);
+INSERT INTO Department_3NF VALUES
+(1, 'CSE'),
+(2, 'ECE'),
+(3, 'MECH');
+USERS TABLE
+CREATE TABLE User_3NF (
+    User_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+    Department_ID INT,
+    FOREIGN KEY (Department_ID) REFERENCES Department_3NF(Department_ID)
+);
+INSERT INTO User_3NF VALUES
+(101, 'Riya', 'riya@gmail.com', 1),
+(102, 'Aman', 'aman@gmail.com', 1),
+(103, 'Dr Sen', 'sen@gmail.com', 2),
+(104, 'Raj', 'admin@gmail.com', 1),
+(105, 'Neha', 'neha@gmail.com', 3),
+(106, 'Arjun', 'arjun@gmail.com', 1),
+(107, 'Priya', 'priya@gmail.com', 2),
+(108, 'Karan', 'karan@gmail.com', 3);
+RESOURCE TABLE
+Resource_ID
+Resource_Name
+Resource_Type
+Location
+Capacity
+Department_ID
+201
+Lab1
+Computer Lab
+1st Floor
+40
+1
+202
+Seminar Hall
+Hall
+Ground Floor
+150
+1
+203
+Projector A
+Equipment
+Store Room
+1
+2
+204
+Lab2
+Computer Lab
+2nd Floor
+50
+3
+CREATE TABLE Resource (
+Resource_ID INT PRIMARY KEY,
+Resource_NameVARCHAR(100),
+Resource_TypeVARCHAR(50),
+ Location VARCHAR(100),
+ Capacity INT,
+Department_ID INT,
+ FOREIGN KEY (Department_ID) REFERENCES Department(Department_ID)
+);
+BOOKING TABLE
+Booking_ID
+Booking_Date
+Start_Time
+End_Time
+Status
+User_ID
+Resource_ID
+301
+2026-02-12
+10:00:00
+12:00:00
+Approved
+101
+201
+302
+2026-02-12
+14:00:00
+16:00:00
+Approved
+101
+202
+303
+2026-02-13
+09:00:00
+11:00:00
+Pending
+102
+201
+304
+2026-02-13
+13:00:00
+14:00:00
+Approved
+103
+203
+305
+2026-02-14
+15:00:00
+17:00:00
+Approved
+104
+202
+306
+2026-02-15
+10:00:00
+12:00:00
+Pending
+105
+204
+307
+2026-02-15
+12:00:00
+13:00:00
+Pending
+105
+203
+308
+2026-02-16
+11:00:00
+13:00:00
+Approved
+106
+201
+CREATE TABLE Booking (
+Booking_ID INT PRIMARY KEY,
+Booking_Date DATE,
+Start_Time TIME,
+End_Time TIME,
+ Status VARCHAR(20),
+User_ID INT,
+Resource_ID INT,
+ FOREIGN KEY (User_ID) REFERENCES User(User_ID),
+ FOREIGN KEY (Resource_ID) REFERENCES Resource(Resource_ID)
+);
+BOOKING_SLOT TABLE
+Booking_ID
+Slot_No
+Slot_Start_Time
+Slot_End_Time
+301
+1
+10:00:00
+11:00:00
+301
+2
+11:00:00
+12:00:00
+302
+1
+14:00:00
+15:00:00
+302
+2
+15:00:00
+16:00:00
+303
+1
+09:00:00
+10:00:00
+303
+2
+10:00:00
+11:00:00
+308
+1
+11:00:00
+12:00:00
+308
+2
+12:00:00
+13:00:00
+CREATE TABLE Booking_Slot (
+Booking_ID INT,
+Slot_No INT,
+Slot_Start_Time TIME,
+Slot_End_Time TIME,
+ PRIMARY KEY (Booking_ID, Slot_No),
+ FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+);
+USAGE_LOG TABLE
+Log_ID
+Booking_ID
+Actual_Start_Time
+Actual_End_Time
+Usage_Duration
+401
+301
+10:05:00
+11:55:00
+110
+402
+302
+14:05:00
+15:55:00
+110
+403
+304
+13:00:00
+14:00:00
+60
+404
+305
+15:05:00
+16:50:00
+105
+CREATE TABLE Usage_Log (
+Log_ID INT PRIMARY KEY,
+Booking_ID INT UNIQUE,
+Actual_Start_Time TIME,
+Actual_End_Time TIME,
+Usage_Duration INT,
+ FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+);
+4.5 BCNF
+4.5.1: Identify Dependency
+In Fourth and Fifth Normal Forms, the focus is on identifying multi-valued dependencies and join dependencies that may still exist after achieving 3NF
+BOOKINGBooking_ID → User_ID, Resource_ID, Booking_Date, Start_Time, End_Time, Status
+BOOKING_SLOT(Booking_ID, Slot_No) → Slot_Start_Time, Slot_End_Time
+Booking_ID →→ Slot_Start_Time, Slot_End_Time
+Resource_ID → Resource_Name, Resource_Type, Location, Capacity, Department_ID
+User_ID → Name, Email, Department_ID
+Log_ID → Booking_ID, Actual_Start_Time, Actual_End_Time, Usage_Duration
+4.5.2: Apply Normalization to BCNF
+Since all determinants are candidate keys:
+USER, DEPARTMENT, RESOURCE, BOOKING, BOOKING_SLOT, USAGE_LOG tables already satisfy BCNF
+No further decomposition required
+BOOKING TABLE (BCNF)
+Booking_ID
+User_ID
+Resource_ID
+Booking_Date
+Status
+301
+101
+201
+2026-02-12
+Approved
+302
+101
+202
+2026-02-12
+Approved
+303
+102
+201
+2026-02-13
+Pending
+304
+103
+203
+2026-02-13
+Approved
+305
+104
+202
+2026-02-14
+Approved
+CREATE TABLE Booking (
+Booking_ID INT PRIMARY KEY,
+User_ID INT,
+Resource_ID INT,
+Booking_Date DATE,
+ Status VARCHAR(20),
+ FOREIGN KEY (User_ID) REFERENCES User(User_ID),
+ FOREIGN KEY (Resource_ID) REFERENCES Resource(Resource_ID)
+);
+BOOKING_SLOT TABLE (BCNF)
+Booking_ID
+Slot_No
+Slot_Start_Time
+Slot_End_Time
+301
+1
+10:00:00
+11:00:00
+301
+2
+11:00:00
+12:00:00
+302
+1
+14:00:00
+15:00:00
+302
+2
+15:00:00
+16:00:00
+303
+1
+09:00:00
+10:00:00
+303
+2
+10:00:00
+11:00:00
+CREATE TABLE Booking_Slot (
+Booking_ID INT,
+Slot_No INT,
+Slot_Start_Time TIME,
+Slot_End_Time TIME,
+ PRIMARY KEY (Booking_ID, Slot_No),
+ FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+);
+RESOURCE_SCHEDULE TABLE (BCNF)
+Resource_ID
+Booking_Date
+Start_Time
+End_Time
+201
+2026-02-12
+10:00:00
+12:00:00
+202
+2026-02-12
+14:00:00
+16:00:00
+201
+2026-02-13
+09:00:00
+11:00:00
+CREATE TABLE Resource_Schedule (
+Resource_ID INT,
+Booking_Date DATE,
+Start_Time TIME,
+End_Time TIME,
+ PRIMARY KEY (Resource_ID, Booking_Date, Start_Time),
+ FOREIGN KEY (Resource_ID) REFERENCES Resource(Resource_ID)
+);
+4.6 Fourth Normal Form (4NF)
+4.6.1: Identify Dependency
+Check for multivalued dependency:
+Example:
+Booking_ID →→ Slot_Start_Time, Slot_End_Time
+4.6.2: Apply Normalization to 4NF
+BOOKING TABLE 
+Booking_ID
+User_ID
+Resource_ID
+Booking_Date
+Status
+301
+101
+201
+2026-02-12
+Approved
+302
+101
+202
+2026-02-12
+Approved
+303
+102
+201
+2026-02-13
+Pending
+304
+103
+203
+2026-02-13
+Approved
+305
+104
+202
+2026-02-14
+Approved
+306
+105
+204
+2026-02-15
+Pending
+307
+105
+203
+2026-02-15
+Pending
+308
+106
+201
+2026-02-16
+Approved
+CREATE TABLE Booking (
+Booking_ID INT PRIMARY KEY,
+User_ID INT,
+Resource_ID INT,
+Booking_Date DATE,
+ Status VARCHAR(20),
+ FOREIGN KEY (User_ID) REFERENCES User(User_ID),
+ FOREIGN KEY (Resource_ID) REFERENCES Resource(Resource_ID)
+);
+BOOKING_SLOT 
+Booking_ID
+Slot_No
+Slot_Start_Time
+Slot_End_Time
+301
+1
+10:00:00
+11:00:00
+301
+2
+11:00:00
+12:00:00
+302
+1
+14:00:00
+15:00:00
+302
+2
+15:00:00
+16:00:00
+303
+1
+09:00:00
+10:00:00
+303
+2
+10:00:00
+11:00:00
+308
+1
+11:00:00
+12:00:00
+308
+2
+12:00:00
+13:00:00
+CREATE TABLE Booking_Slot (
+Booking_ID INT,
+Slot_No INT,
+Slot_Start_Time TIME,
+Slot_End_Time TIME,
+ PRIMARY KEY (Booking_ID, Slot_No),
+ FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+);
+4.7 Fifth Normal Form
+ 4.7.1: Identify Dependency
+Identify Dependency
+Check for join dependency:
+Example relation:
+| Booking_ID | User_ID | Resource_ID | Booking_Date |
+Data may depend on multiple relationships:
+User ↔ Booking
+ Resource ↔ Booking
+ User ↔ Resource (through booking)
+4.7.2: Apply Normalization to 5NF
+USER TABLE
+User_ID
+Name
+Email
+Department_ID
+101
+Riya
+riya@gmail.com
+1
+102
+Aman
+aman@gmail.com
+1
+103
+Dr.Sen
+sen@gmail.com
+2
+104
+Raj
+admin@gmail.com
+1
+105
+Neha
+neha@gmail.com
+3
+106
+Arjun
+arjun@gmail.com
+1
+107
+Priya
+priya@gmail.com
+2
+108
+Karan
+karan@gmail.com
+3
+CREATE TABLE User (
+User_ID INT PRIMARY KEY,
+ Name VARCHAR(100),
+ Email VARCHAR(100),
+Department_ID INT,
+ FOREIGN KEY (Department_ID) REFERENCES Department(Department_ID)
+);
+DEPARTMENT 
+Department_ID
+Department_Name
+1
+CSE
+2
+ECE
+3
+MECH
+CREATE TABLE Department (
+Department_ID INT PRIMARY KEY,
+Department_NameVARCHAR(100)
+);
+RESOURCE 
+Resource_ID
+Resource_Name
+Resource_Type
+Location
+Capacity
+Department_ID
+201
+Lab1
+Computer Lab
+1st Floor
+40
+1
+202
+Seminar Hall
+Hall
+Ground Floor
+150
+1
+203
+Projector A
+Equipment
+Store Room
+1
+2
+204
+Lab2
+Computer Lab
+2nd Floor
+50
+3
+CREATE TABLE Resource (
+Resource_ID INT PRIMARY KEY,
+Resource_NameVARCHAR(100),
+Resource_TypeVARCHAR(50),
+ Location VARCHAR(100),
+ Capacity INT,
+Department_ID INT,
+ FOREIGN KEY (Department_ID) REFERENCES Department(Department_ID)
+);
+BOOKING 
+Booking_ID
+User_ID
+Resource_ID
+Booking_Date
+Status
+301
+101
+201
+2026-02-12
+Approved
+302
+101
+202
+2026-02-12
+Approved
+303
+102
+201
+2026-02-13
+Pending
+304
+103
+203
+2026-02-13
+Approved
+305
+104
+202
+2026-02-14
+Approved
+306
+105
+204
+2026-02-15
+Pending
+307
+105
+203
+2026-02-15
+Pending
+308
+106
+201
+2026-02-16
+Approved
+CREATE TABLE Booking (
+Booking_ID INT PRIMARY KEY,
+User_ID INT,
+Resource_ID INT,
+Booking_Date DATE,
+ Status VARCHAR(20),
+ FOREIGN KEY (User_ID) REFERENCES User(User_ID),
+ FOREIGN KEY (Resource_ID) REFERENCES Resource(Resource_ID)
+);
+BOOKING_SLOT
+Booking_ID
+Slot_No
+ Slot_Start_Time
+Slot_End_Time
+301
+1
+10:00:00
+11:00:00
+301
+2
+11:00:00
+12:00:00
+302
+1
+14:00:00
+15:00:00
+302
+2
+15:00:00
+16:00:00
+303
+1
+09:00:00
+10:00:00
+303
+2
+10:00:00
+11:00:00
+308
+1
+11:00:00
+12:00:00
+308
+2
+12:00:00
+13:00:00
+CREATE TABLE Booking_Slot (
+Booking_ID INT,
+Slot_No INT,
+Slot_Start_Time TIME,
+Slot_End_Time TIME,
+ PRIMARY KEY (Booking_ID, Slot_No),
+ FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+);
+USAGE_LOG 
+Log_ID
+Booking_ID
+Actual_Start_Time
+Actual_End_Time
+Usage_Duration
+401
+301
+10:05:00
+11:55:00
+110
+402
+302
+14:05:00
+15:55:00
+110
+403
+304
+13:00:00
+14:00:00
+60
+404
+305
+15:05:00
+16:50:00
+105
+CREATE TABLE Usage_Log (
+Log_ID INT PRIMARY KEY,
+Booking_ID INT UNIQUE,
+Actual_Start_Time TIME,
+Actual_End_Time TIME,
+Usage_Duration INT,
+ FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
+);
+CHAPTER 5
+IMPLEMENTATION OF CONCURRENCY CONTROL AND RECOVERY MECHANISMS
+ 5.1 Introduction to Transactions
+In a database system, multiple users may access and manipulate data simultaneously. In the Smart Campus Resource Allocation System, users such as students, faculty members, and administrators can perform operations like booking resources, updating schedules, and viewing availability at the same time. This concurrent access may lead to data inconsistency and conflicts if not properly managed.
+5.1.1 Properties
+1. Atomicity
+Atomicity ensures that a transaction is treated as a single unit of work. Either all operations of a transaction are completed successfully, or none of them are applied.
+2. Consistency
+Consistency ensures that a transaction takes the database from one valid state to another valid state. All integrity constraints such as primary keys and foreign keys must be maintained
+3. Isolation
+Isolation ensures that multiple transactions executing at the same time do not interfere with each other. Each transaction is executed as if it is the only transaction in the system.
+4. Durability
+Durability ensures that once a transaction is committed, the changes made are permanent, even in case of system failure.
+5.1.2 States
+A transaction passes through different states during its execution in a database system.
+Active
+The transaction is currently executing and performing read/write operations.
+Partially Committed
+The transaction has completed all its operations but the changes are not yet permanently saved.
+Committed
+The transaction has been successfully completed and all changes are permanently stored in the database.
+Failed
+The transaction cannot proceed further due to an error or system failure.
+Aborted
+The transaction is rolled back, and all changes made by it are undone.
+Terminated
+The transaction has finished execution, either after commit or abort, and releases all resources.
+5.2 Transaction Control Language (TCL)
+ TCL commands are used to control transactions in the database.
+5.2.1 Save point
+A savepoint creates a temporary checkpoint inside the transaction. 
+SAVEPOINT sp1; 
+Example in project: Creates a restore point after booking insertion so that if slot insertion fails, the system can rollback only the slot entries without affecting the booking.
+5.2.2Commit
+COMMIT permanently saves all changes made during the transaction. 
+COMMIT; 
+5.2.3 Rollback 
+ROLLBACK undoes all changes made during the current transaction. 
+ROLLBACK;
+5.3 create 5 transactions for your project and execute 
+Concurrency control ensures multiple users can access the database simultaneously without inconsistency.
+5.3.1 Transaction 1: Booking with Savepoint and Rollback
+This transaction demonstrates inserting a booking and slot details using a savepoint. If an error occurs, rollback is performed to the savepoint.
+START TRANSACTION;
+-- Insert booking
+INSERT INTO Booking (Booking_ID, User_ID, Resource_ID, Booking_Date, Status)
+VALUES (311, 101, 201, '2026-02-22', 'Pending');
+-- Create savepoint
+SAVEPOINT sp1;
+-- Insert slot 1
+INSERT INTO Booking_Slot (Booking_ID, Slot_No, Slot_Start_Time, Slot_End_Time)
+VALUES (311, 1, '10:00:00', '11:00:00');
+-- Insert slot 2 (assume error happens)
+INSERT INTO Booking_Slot (Booking_ID, Slot_No, Slot_Start_Time, Slot_End_Time)
+VALUES (311, 2, '11:00:00', '12:00:00');
+-- Rollback to savepoint (removes slot entries only)
+ROLLBACK TO sp1;
+-- Commit booking
+COMMIT;
+5.3.2 Transaction 2: Booking with Commit
+START TRANSACTION;
+INSERT INTO Booking (Booking_ID, User_ID, Resource_ID, Booking_Date, Status)
+VALUES (312, 102, 202, '2026-02-23', 'Pending');
+COMMIT;
+5.3.3 Transaction 3: Update with Rollback
+START TRANSACTION;
+UPDATE Booking
+SET Status = 'Approved'
+WHERE Booking_ID = 312;
+-- Error occurs
+ROLLBACK;
+5.3.4 Transaction 4: Delete with Commit
+START TRANSACTION;
+DELETE FROM Booking
+WHERE Booking_ID = 306;
+COMMIT;
+5.3.5 Transaction 5: Usage Log with Savepoint
+START TRANSACTION;
+INSERT INTO Usage_Log (Log_ID, Booking_ID, Actual_Start_Time, Actual_End_Time, Usage_Duration)
+VALUES (406, 311, '10:05:00', '11:55:00', 110);
+SAVEPOINT sp2;
+-- Incorrect update
+UPDATE Usage_Log
+SET Usage_Duration = -50
+WHERE Log_ID = 406;
+-- Rollback incorrect update
+ROLLBACK TO sp2;
+COMMIT;
+5.3 Concurrency control 
+Concurrency control ensures that multiple users can access the database simultaneously without causing inconsistency or data conflicts. It is mainly used to prevent issues such as lost updates, dirty reads, and inconsistent data when more than one transaction tries to access the same data at the same time.
+Concurrency control in this project ensures that multiple users can book resources simultaneously without causing conflicts or data inconsistency.
+5.3.1 Concurrency control Algorithms 
+5.3.1 Locking commands
+a. Row-Level Locking – SELECT ... FOR UPDATE
+Locks specific rows to prevent other transactions from modifying them
+SELECT *FROM BookingWHERE Booking_ID = 301FOR UPDATE;
+Locks only the selected booking record
+ Other users cannot update/delete this booking until the transaction completes
+ Used to prevent double booking of the same resource
+b. Table-Level Locking – LOCK TABLE
+Locks the entire table
+LOCK TABLE Booking IN EXCLUSIVE MODE;
+No other transaction can read or write to the Booking table
+ Used during critical operations like bulk updates or maintenance
+Lock Mode
+Description
+ROW SHARE
+Allows concurrent access; prevents exclusive table locks
+ROW EXCLUSIVE
+Used for INSERT/UPDATE/DELETE; restricts other locks
+SHARE
+Allows only read operations; blocks updates
+SHARE ROW EXCLUSIVE
+Allows reads but restricts other locks
+EXCLUSIVE
+Prevents all other access (full table lock)
+c. COMMIT – Release All Locks
+After successful execution of the transaction, COMMIT is used to permanently save the changes and release all acquired locks.
+COMMIT;
+In our project, once a booking is successfully inserted or updated, COMMIT saves the changes and releases the locks on the Booking table.
+d. ROLLBACK – Undo Changes & Release Locks
+ROLLBACK is used when an error occurs during the transaction. It undoes all changes made during the current transaction and releases all locks.
+ROLLBACK;
+This ensures data consistency in case of transaction failure, such as an invalid booking or conflict in resource allocation.
+5.3.2 Example (1 example for your project)
+Scenario: Preventing simultaneous booking of the same resource
+Transaction 1 (User A)
+START TRANSACTION;SELECT *FROM BookingWHERE Resource_ID = 201FOR UPDATE;UPDATE BookingSET Status = 'Approved'WHERE Booking_ID = 301;COMMIT;
+Transaction 2 (User B)
+START TRANSACTION;UPDATE BookingSET Status = 'Approved'WHERE Booking_ID = 301;
+Transaction 1 locks the row using FOR UPDATE
+Transaction 2 must wait until Transaction 1 completes
+SELECT * FROM Booking WHERE Booking_ID = 301;
