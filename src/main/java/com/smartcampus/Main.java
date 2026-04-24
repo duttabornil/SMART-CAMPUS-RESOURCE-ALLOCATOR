@@ -15,7 +15,6 @@ public class Main {
                 }
             }
 
-            // Increase font size globally
             Font myFont = new Font("SansSerif", Font.PLAIN, 18);
             FontUIResource fontRes = new FontUIResource(myFont);
             UIManager.getLookAndFeelDefaults().put("defaultFont", fontRes);
