@@ -1,7 +1,7 @@
 package com.smartcampus;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.sql.*;
 import java.util.Vector;
@@ -13,7 +13,8 @@ public class MainFrame extends JFrame {
         dbManager = new DatabaseManager();
 
         setTitle("Smart Campus Resource Allocation System");
-        setSize(800, 600);
+        setSize(1024, 768);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -57,7 +58,36 @@ public class MainFrame extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
 
         DefaultTableModel model = new DefaultTableModel();
-        JTable table = new JTable(model);
+        JTable table = new JTable(model) {
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (!isRowSelected(row)) {
+                    int statusColumnIndex = -1;
+                    for (int i = 0; i < getModel().getColumnCount(); i++) {
+                        if ("Status".equals(getModel().getColumnName(i))) {
+                            statusColumnIndex = i;
+                            break;
+                        }
+                    }
+                    if (statusColumnIndex != -1) {
+                        Object statusValue = getModel().getValueAt(convertRowIndexToModel(row), statusColumnIndex);
+                        String status = statusValue != null ? statusValue.toString() : "";
+                        if ("Approved".equalsIgnoreCase(status)) {
+                            c.setBackground(new Color(200, 255, 200));
+                        } else if ("Rejected".equalsIgnoreCase(status)) {
+                            c.setBackground(new Color(255, 200, 200));
+                        } else {
+                            c.setBackground(getBackground());
+                        }
+                    }
+                }
+                return c;
+            }
+        };
+        table.setRowHeight(40);
+        table.setIntercellSpacing(new Dimension(15, 15));
+        
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane, BorderLayout.CENTER);
 
@@ -73,7 +103,7 @@ public class MainFrame extends JFrame {
     }
 
     private void loadBookings(DefaultTableModel model) {
-        String sql = "SELECT b.Booking_ID, b.Booking_Date, b.Start_Time, b.End_Time, b.Status, u.Name as User_Name, r.Resource_Name "
+        String sql = "SELECT b.Booking_ID, b.User_ID, b.Booking_Date, b.Start_Time, b.End_Time, b.Status, u.Name as User_Name, r.Resource_Name "
                 +
                 "FROM Booking b " +
                 "JOIN User u ON b.User_ID = u.User_ID " +
@@ -85,6 +115,7 @@ public class MainFrame extends JFrame {
 
             Vector<String> columnNames = new Vector<>();
             columnNames.add("Booking ID");
+            columnNames.add("User ID");
             columnNames.add("Date");
             columnNames.add("Start Time");
             columnNames.add("End Time");
@@ -95,13 +126,14 @@ public class MainFrame extends JFrame {
             Vector<Vector<Object>> data = new Vector<>();
             while (rs.next()) {
                 Vector<Object> row = new Vector<>();
-                row.add(rs.getInt("Booking_ID"));
-                row.add(rs.getDate("Booking_Date"));
-                row.add(rs.getTime("Start_Time"));
-                row.add(rs.getTime("End_Time"));
-                row.add(rs.getString("Status"));
-                row.add(rs.getString("User_Name"));
-                row.add(rs.getString("Resource_Name"));
+                row.add(rs.getObject("Booking_ID") == null ? "NULL" : rs.getObject("Booking_ID"));
+                row.add(rs.getObject("User_ID") == null ? "NULL" : rs.getObject("User_ID"));
+                row.add(rs.getObject("Booking_Date") == null ? "NULL" : rs.getObject("Booking_Date"));
+                row.add(rs.getObject("Start_Time") == null ? "NULL" : rs.getObject("Start_Time"));
+                row.add(rs.getObject("End_Time") == null ? "NULL" : rs.getObject("End_Time"));
+                row.add(rs.getObject("Status") == null ? "NULL" : rs.getObject("Status"));
+                row.add(rs.getObject("User_Name") == null ? "NULL" : rs.getObject("User_Name"));
+                row.add(rs.getObject("Resource_Name") == null ? "NULL" : rs.getObject("Resource_Name"));
                 data.add(row);
             }
 
@@ -116,7 +148,7 @@ public class MainFrame extends JFrame {
     private JPanel createBookResourcePanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField dateField = new JTextField(15); // format: YYYY-MM-DD
@@ -198,20 +230,25 @@ public class MainFrame extends JFrame {
                 userIdField.setText("");
                 resourceCombo.removeAllItems();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                String errorMsg = ex.getMessage();
+                if (errorMsg != null && errorMsg.contains("foreign key constraint fails") && errorMsg.contains("`User_ID`")) {
+                    JOptionPane.showMessageDialog(this, "Error: User ID not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error: " + errorMsg, "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
-        // Wrapper to align top
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(panel, BorderLayout.NORTH);
+        // Wrapper to center
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(panel);
         return wrapper;
     }
 
     private JPanel createUserPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField idField = new JTextField(15);
@@ -259,15 +296,15 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(panel, BorderLayout.NORTH);
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(panel);
         return wrapper;
     }
 
     private JPanel createResourcePanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField idField = new JTextField(15);
@@ -313,15 +350,15 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(panel, BorderLayout.NORTH);
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(panel);
         return wrapper;
     }
 
     private JPanel createDepartmentPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField idField = new JTextField(15);
@@ -355,15 +392,15 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(panel, BorderLayout.NORTH);
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(panel);
         return wrapper;
     }
 
     private JPanel createApproveBookingsPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField bookingIdField = new JTextField(15);
@@ -402,15 +439,15 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(panel, BorderLayout.NORTH);
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(panel);
         return wrapper;
     }
 
     private JPanel createUsageLogPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JTextField logIdField = new JTextField(15);
@@ -452,8 +489,8 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.add(panel, BorderLayout.NORTH);
+        JPanel wrapper = new JPanel(new GridBagLayout());
+        wrapper.add(panel);
         return wrapper;
     }
 
