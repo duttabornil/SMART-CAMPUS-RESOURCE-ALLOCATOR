@@ -1,4 +1,4 @@
--- DDL Commands
+
 CREATE TABLE IF NOT EXISTS Department (
     Department_ID INT PRIMARY KEY,
     Department_Name VARCHAR(100) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Usage_Log (
     FOREIGN KEY (Booking_ID) REFERENCES Booking(Booking_ID)
 );
 
--- DML Commands (Sample Data)
+
 INSERT IGNORE INTO Department (Department_ID, Department_Name, Block) VALUES
 (1, 'Computer Science', 'Block A'),
 (2, 'Electronics', 'Block B'),

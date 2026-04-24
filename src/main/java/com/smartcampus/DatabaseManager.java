@@ -13,7 +13,7 @@ public class DatabaseManager {
 
     public DatabaseManager() {
         try {
-            // Load MySQL JDBC driver
+
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.err.println("Failed to load MySQL JDBC Driver: " + e.getMessage());

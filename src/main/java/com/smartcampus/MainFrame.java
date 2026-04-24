@@ -96,7 +96,7 @@ public class MainFrame extends JFrame {
 
         refreshButton.addActionListener(e -> loadBookings(model));
 
-        // Load initially
+
         loadBookings(model);
 
         return panel;
@@ -151,8 +151,8 @@ public class MainFrame extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JTextField dateField = new JTextField(15); // format: YYYY-MM-DD
-        JTextField startField = new JTextField(15); // format: HH:MM:SS
+        JTextField dateField = new JTextField(15);
+        JTextField startField = new JTextField(15);
         JTextField endField = new JTextField(15);
         JTextField purposeField = new JTextField(15);
         JTextField userIdField = new JTextField(15);
@@ -222,7 +222,7 @@ public class MainFrame extends JFrame {
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Booking created successfully! Your Booking ID is: " + randomId);
 
-                // clear fields
+
                 dateField.setText("");
                 startField.setText("");
                 endField.setText("");
@@ -239,7 +239,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // Wrapper to center
+
         JPanel wrapper = new JPanel(new GridBagLayout());
         wrapper.add(panel);
         return wrapper;
@@ -452,9 +452,9 @@ public class MainFrame extends JFrame {
 
         JTextField logIdField = new JTextField(15);
         JTextField bookingIdField = new JTextField(15);
-        JTextField startField = new JTextField(15); // HH:MM:SS
-        JTextField endField = new JTextField(15); // HH:MM:SS
-        JTextField durationField = new JTextField(15); // in minutes
+        JTextField startField = new JTextField(15);
+        JTextField endField = new JTextField(15);
+        JTextField durationField = new JTextField(15);
 
         int row = 0;
         addFormField(panel, "Log ID:", logIdField, gbc, row++);
