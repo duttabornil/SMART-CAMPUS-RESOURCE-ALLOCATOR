@@ -12,6 +12,20 @@ In many institutions, improper scheduling leads to resource conflicts and ineffi
 * **Approval Workflow:** An "Approve Bookings" tab allowing administrators to approve or reject pending resource requests.
 * **Usage Logging:** Track actual resource usage, including actual start times, end times, and duration, through the "Usage Logs" tab.
 
+## Screenshots
+
+<div align="center">
+  <img src="screenshots/all_bookings.png" alt="All Bookings View" width="800"/>
+  <p><em>The main dashboard showing all bookings with color-coded statuses.</em></p>
+</div>
+
+<br>
+
+<div align="center">
+  <img src="screenshots/book_resource.png" alt="Book Resource View" width="800"/>
+  <p><em>Dynamic resource booking form.</em></p>
+</div>
+
 ## Dependencies Required
 
 To run this application, you must have the following installed on your system:
