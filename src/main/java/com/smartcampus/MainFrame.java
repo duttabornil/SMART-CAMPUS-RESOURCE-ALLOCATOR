@@ -51,7 +51,33 @@ public class MainFrame extends JFrame {
             }
         });
 
-        add(tabbedPane);
+        JPanel topBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton themeBtn = new JButton("🌓 Toggle Theme");
+        themeBtn.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        themeBtn.setFocusPainted(false);
+        themeBtn.addActionListener(e -> toggleTheme());
+        topBar.add(themeBtn);
+
+        setLayout(new BorderLayout());
+        add(topBar, BorderLayout.NORTH);
+        add(tabbedPane, BorderLayout.CENTER);
+    }
+
+    private boolean isDarkTheme = false;
+
+    private void toggleTheme() {
+        try {
+            if (isDarkTheme) {
+                UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
+                isDarkTheme = false;
+            } else {
+                UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatDarkLaf());
+                isDarkTheme = true;
+            }
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private JPanel createViewBookingsPanel() {
@@ -74,25 +100,48 @@ public class MainFrame extends JFrame {
                         Object statusValue = getModel().getValueAt(convertRowIndexToModel(row), statusColumnIndex);
                         String status = statusValue != null ? statusValue.toString() : "";
                         if ("Approved".equalsIgnoreCase(status)) {
-                            c.setBackground(new Color(200, 255, 200));
+                            c.setBackground(isDarkTheme ? new Color(40, 100, 40) : new Color(200, 255, 200));
+                            c.setForeground(isDarkTheme ? Color.WHITE : Color.BLACK);
                         } else if ("Rejected".equalsIgnoreCase(status)) {
-                            c.setBackground(new Color(255, 200, 200));
+                            c.setBackground(isDarkTheme ? new Color(100, 40, 40) : new Color(255, 200, 200));
+                            c.setForeground(isDarkTheme ? Color.WHITE : Color.BLACK);
                         } else {
                             c.setBackground(getBackground());
+                            c.setForeground(getForeground());
                         }
+                    } else {
+                        c.setBackground(getBackground());
+                        c.setForeground(getForeground());
                     }
+                } else {
+                    c.setBackground(getSelectionBackground());
+                    c.setForeground(getSelectionForeground());
                 }
                 return c;
             }
         };
         table.setRowHeight(40);
         table.setIntercellSpacing(new Dimension(15, 15));
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(false);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
         
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         panel.add(scrollPane, BorderLayout.CENTER);
 
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
         JButton refreshButton = new JButton("Refresh Bookings");
-        panel.add(refreshButton, BorderLayout.SOUTH);
+        refreshButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        bottomPanel.add(refreshButton);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+        
+        JLabel titleLabel = new JLabel("All Bookings");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         refreshButton.addActionListener(e -> loadBookings(model));
 
@@ -240,9 +289,7 @@ public class MainFrame extends JFrame {
         });
 
 
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.add(panel);
-        return wrapper;
+        return wrapWithTitle(panel, "Book a Resource");
     }
 
     private JPanel createUserPanel() {
@@ -296,9 +343,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.add(panel);
-        return wrapper;
+        return wrapWithTitle(panel, "Add New User");
     }
 
     private JPanel createResourcePanel() {
@@ -350,9 +395,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.add(panel);
-        return wrapper;
+        return wrapWithTitle(panel, "Add New Resource");
     }
 
     private JPanel createDepartmentPanel() {
@@ -392,9 +435,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.add(panel);
-        return wrapper;
+        return wrapWithTitle(panel, "Add New Department");
     }
 
     private JPanel createApproveBookingsPanel() {
@@ -439,9 +480,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.add(panel);
-        return wrapper;
+        return wrapWithTitle(panel, "Approve Bookings");
     }
 
     private JPanel createUsageLogPanel() {
@@ -489,8 +528,30 @@ public class MainFrame extends JFrame {
             }
         });
 
+        return wrapWithTitle(panel, "Add Usage Log");
+    }
+
+    private JPanel wrapWithTitle(JPanel panel, String title) {
         JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.add(panel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(20, 20, 30, 20);
+        
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        wrapper.add(titleLabel, gbc);
+        
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, 20, 20, 20);
+        
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true),
+            BorderFactory.createEmptyBorder(25, 30, 25, 30)
+        ));
+        
+        wrapper.add(panel, gbc);
         return wrapper;
     }
 
