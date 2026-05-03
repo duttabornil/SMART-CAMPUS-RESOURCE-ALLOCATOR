@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus Resource Allocation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Smart Campus</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-target="view-bookings">View Bookings</a>
+                <a href="#" class="nav-item" data-target="book-resource">Book Resource</a>
+                <a href="#" class="nav-item" data-target="add-user">Add User</a>
+                <a href="#" class="nav-item" data-target="add-resource">Add Resource</a>
+                <a href="#" class="nav-item" data-target="add-department">Add Department</a>
+                <a href="#" class="nav-item" data-target="approve-bookings">Approve Bookings</a>
+                <a href="#" class="nav-item" data-target="add-usage-log">Add Usage Log</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="btn-theme">🌓 Toggle Theme</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- View Bookings Panel -->
+            <section id="view-bookings" class="panel active">
+                <div class="panel-header">
+                    <h1>All Bookings</h1>
+                    <button id="refresh-bookings" class="btn btn-primary">Refresh</button>
+                </div>
+                <div class="table-container">
+                    <table id="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>User ID</th>
+                                <th>User</th>
+                                <th>Resource</th>
+                                <th>Date</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Book Resource Panel -->
+            <section id="book-resource" class="panel">
+                <div class="panel-header">
+                    <h1>Book a Resource</h1>
+                </div>
+                <div class="form-container">
+                    <form id="book-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="book-date">Date (YYYY-MM-DD)</label>
+                                <input type="date" id="book-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="book-start">Start Time</label>
+                                <input type="time" step="1" id="book-start" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="book-end">End Time</label>
+                                <input type="time" step="1" id="book-end" required>
+                            </div>
+                            <div class="form-group btn-group-vertical">
+                                <button type="button" id="find-resources" class="btn btn-secondary">Find Available</button>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="book-resource-select">Available Resource</label>
+                                <select id="book-resource-select" required>
+                                    <option value="" disabled selected>Select a resource...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="book-purpose">Purpose</label>
+                                <input type="text" id="book-purpose" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="book-user-id">User ID</label>
+                                <input type="number" id="book-user-id" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Book Resource</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Add User Panel -->
+            <section id="add-user" class="panel">
+                <div class="panel-header">
+                    <h1>Add New User</h1>
+                </div>
+                <div class="form-container">
+                    <form id="user-form">
+                        <div class="form-group">
+                            <label for="user-id">User ID</label>
+                            <input type="number" id="user-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-name">Name</label>
+                            <input type="text" id="user-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-email">Email</label>
+                            <input type="email" id="user-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-role">Role</label>
+                            <select id="user-role">
+                                <option value="Student">Student</option>
+                                <option value="Faculty">Faculty</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="user-dept">Department ID</label>
+                            <input type="number" id="user-dept" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Add User</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Add Resource Panel -->
+            <section id="add-resource" class="panel">
+                <div class="panel-header">
+                    <h1>Add New Resource</h1>
+                </div>
+                <div class="form-container">
+                    <form id="resource-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-id">Resource ID</label>
+                                <input type="number" id="res-id" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-name">Resource Name</label>
+                                <input type="text" id="res-name" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-type">Type</label>
+                                <input type="text" id="res-type" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-location">Location</label>
+                                <input type="text" id="res-location" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-capacity">Capacity</label>
+                                <input type="number" id="res-capacity" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-dept">Department ID</label>
+                                <input type="number" id="res-dept" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Add Resource</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Add Department Panel -->
+            <section id="add-department" class="panel">
+                <div class="panel-header">
+                    <h1>Add New Department</h1>
+                </div>
+                <div class="form-container">
+                    <form id="dept-form">
+                        <div class="form-group">
+                            <label for="dept-id">Department ID</label>
+                            <input type="number" id="dept-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dept-name">Department Name</label>
+                            <input type="text" id="dept-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dept-block">Block</label>
+                            <input type="text" id="dept-block" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Add Department</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Approve Bookings Panel -->
+            <section id="approve-bookings" class="panel">
+                <div class="panel-header">
+                    <h1>Approve Bookings</h1>
+                </div>
+                <div class="form-container">
+                    <form id="approve-form">
+                        <div class="form-group">
+                            <label for="approve-booking-id">Booking ID</label>
+                            <input type="number" id="approve-booking-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="approve-status">New Status</label>
+                            <select id="approve-status">
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Update Status</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Add Usage Log Panel -->
+            <section id="add-usage-log" class="panel">
+                <div class="panel-header">
+                    <h1>Add Usage Log</h1>
+                </div>
+                <div class="form-container">
+                    <form id="usage-log-form">
+                        <div class="form-group">
+                            <label for="log-id">Log ID</label>
+                            <input type="number" id="log-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="log-booking-id">Booking ID</label>
+                            <input type="number" id="log-booking-id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="log-start">Actual Start Time (HH:MM:SS)</label>
+                            <input type="time" step="1" id="log-start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="log-end">Actual End Time (HH:MM:SS)</label>
+                            <input type="time" step="1" id="log-end" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="log-duration">Duration (minutes)</label>
+                            <input type="number" id="log-duration" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">Add Usage Log</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content glass-effect">
+            <h2>Admin Verification</h2>
+            <p>Please enter the admin password to access this section.</p>
+            <input type="password" id="admin-password" placeholder="Password">
+            <div class="modal-actions">
+                <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+                <button id="modal-submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
