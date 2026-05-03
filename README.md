@@ -1,6 +1,4 @@
 # Smart Campus Resource Allocation System
-
-<<<<<<< HEAD
 The **Smart Campus Resource Allocation System** is a modern, locally-hosted web application designed to efficiently manage and allocate campus resources such as classrooms, laboratories, seminar halls, and projectors.
 =======
 The *Smart Campus Resource Allocation System* is a Java-powered desktop application with an intuitive Graphical User Interface (GUI), purpose-built to manage and allocate campus resources — including classrooms, laboratories, seminar halls, and projectors — with precision and ease.
