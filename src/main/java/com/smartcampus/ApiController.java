@@ -123,7 +123,7 @@ public class ApiController {
 
     @PostMapping("/departments")
     public ResponseEntity<?> createDepartment(@RequestBody Map<String, String> payload) {
-        String sql = "INSERT INTO Department (Department_ID, Department_Name, Block) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Department (Department_ID, Name, Building) VALUES (?, ?, ?)";
         try (Connection conn = dbManager.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, Integer.parseInt(payload.get("id")));
             pstmt.setString(2, payload.get("name"));

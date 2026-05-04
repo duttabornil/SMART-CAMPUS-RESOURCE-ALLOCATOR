@@ -1,3 +1,4 @@
 com\smartcampus\ApiController.class
 com\smartcampus\SmartCampusApplication.class
 com\smartcampus\DatabaseManager.class
+com\smartcampus\CheckSchema.class

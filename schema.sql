@@ -1,8 +1,8 @@
 
 CREATE TABLE IF NOT EXISTS Department (
     Department_ID INT PRIMARY KEY,
-    Department_Name VARCHAR(100) NOT NULL,
-    Block VARCHAR(50)
+    Name VARCHAR(100) NOT NULL,
+    Building VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS User (
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS Usage_Log (
 );
 
 
-INSERT IGNORE INTO Department (Department_ID, Department_Name, Block) VALUES
+INSERT IGNORE INTO Department (Department_ID, Name, Building) VALUES
 (1, 'Computer Science', 'Block A'),
 (2, 'Electronics', 'Block B'),
 (3, 'Mechanical', 'Block C');
